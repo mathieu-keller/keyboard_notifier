@@ -32,5 +32,12 @@ jobs:
           command: build
           args: --target x86_64-unknown-linux-musl
       - name: Build image
-        run: tree
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/notifier
+      - name: push image
+        run: |
+          docker login -u=${{ secrets.DOCKER_USER }} -p=${{ secrets.DOCKER_PASSWORD }}
+          docker tag ${{ secrets.DOCKER_USER }}/notifier ${{ secrets.DOCKER_USER }}/notifier:latest
+          docker push ${{ secrets.DOCKER_USER }}/notifier:latest
+          docker tag ${{ secrets.DOCKER_USER }}/notifier ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
+          docker push ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
         
