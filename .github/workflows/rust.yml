@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Rust MUSL Builder
+        uses: NSCoder/rust-musl-action@v1.0.0
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
