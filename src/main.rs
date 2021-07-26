@@ -11,7 +11,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(middleware::Logger::default())
-            .data(web::JsonConfig::default().limit(16256))
+            .app_data(web::JsonConfig::default().limit(16256))
             .service(web::resource("/check-run").route(web::post().to(send_check_run)))
             .service(web::resource("/check-suites").route(web::post().to(send_check_suit)))
     })
