@@ -24,7 +24,11 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo build --release --all-features
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target x86_64-unknown-linux-musl
       - name: Build image
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/notifier
       - name: push image
