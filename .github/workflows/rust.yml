@@ -24,14 +24,13 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo build --release --all-features
+          target: x86_64-unknown-linux-musl
+          default: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target x86_64-unknown-linux-musl
       - name: Build image
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/notifier
-      - name: push image
-        run: |
-          docker login -u=${{ secrets.DOCKER_USER }} -p=${{ secrets.DOCKER_PASSWORD }}
-          docker tag ${{ secrets.DOCKER_USER }}/notifier ${{ secrets.DOCKER_USER }}/notifier:latest
-          docker push ${{ secrets.DOCKER_USER }}/notifier:latest
-          docker tag ${{ secrets.DOCKER_USER }}/notifier ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
-          docker push ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
+        run: tree
         
