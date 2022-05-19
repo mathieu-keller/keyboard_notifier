@@ -3,14 +3,14 @@ use actix_web::{web, HttpResponse};
 use serde::{Serialize, Deserialize};
 #[derive(Debug, Serialize, Deserialize)]
 struct AppDto {
-    id: i32,
+    id: i64,
     slug: String,
     name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct CheckSuitDto {
-    id: i32,
+    id: i64,
     status: String,
     conclusion: Option<String>,
     app: AppDto,
