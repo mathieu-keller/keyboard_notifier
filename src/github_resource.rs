@@ -57,11 +57,11 @@ struct KeyboardDto {
     name: String,
 }
 
-pub async fn send_check_run(check_run: web::Json<CheckRunActionDto>) -> HttpResponse {
+pub async fn send_check_run(check_run: web::Json<CheckRunActionDto>) -> Option<HttpResponse> {
     if check_run.check_run.status.eq("queued") {
-        return keyboard::send_to_keyboard("#FFFF00".to_string(), "", &check_run.repository.name, "BLINK".to_string()).await;
+        return Some(keyboard::send_to_keyboard("#FFFF00".to_string(), "", &check_run.repository.name, "BLINK".to_string()).await);
     }
-    return nil;
+    return None;
 }
 
 pub async fn send_check_suit(check_suit: web::Json<CheckSuitActionDto>) -> HttpResponse {
