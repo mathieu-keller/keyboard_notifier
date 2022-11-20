@@ -1,6 +1,8 @@
+use actix_web::{HttpResponse, web};
+use serde::{Deserialize, Serialize};
+
 mod keyboard;
-use actix_web::{web, HttpResponse};
-use serde::{Serialize, Deserialize};
+
 #[derive(Debug, Serialize, Deserialize)]
 struct AppDto {
     id: i64,
@@ -26,7 +28,7 @@ struct CheckRunDto {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct RepositoryDto {
-    name: String
+    name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -56,7 +58,10 @@ struct KeyboardDto {
 }
 
 pub async fn send_check_run(check_run: web::Json<CheckRunActionDto>) -> HttpResponse {
-    keyboard::send_to_keyboard("#FFFF00".to_string(), "", &check_run.repository.name, "BLINK".to_string()).await
+    if check_run.check_run.status.eq("queued") {
+        return keyboard::send_to_keyboard("#FFFF00".to_string(), "", &check_run.repository.name, "BLINK".to_string()).await;
+    }
+    return nil;
 }
 
 pub async fn send_check_suit(check_suit: web::Json<CheckSuitActionDto>) -> HttpResponse {
