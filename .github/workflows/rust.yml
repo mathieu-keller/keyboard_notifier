@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -34,4 +34,25 @@ jobs:
           docker push ${{ secrets.DOCKER_USER }}/notifier:latest
           docker tag ${{ secrets.DOCKER_USER }}/notifier ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
           docker push ${{ secrets.DOCKER_USER }}/notifier:${{ github.run_number }}
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy stack to Portainer
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: 'keyboard-notifier'
+          stack-definition: 'stack-definition.yaml'
+          template-variables: >
+            {
+              "VERSION": "${{ github.run_number }}", 
+              "username": "${{ secrets.DOCKER_USER }}"
+            }
         

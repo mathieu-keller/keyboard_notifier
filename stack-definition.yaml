@@ -1,0 +1,8 @@
+services:
+  notifier:
+    image: {{username}}/notifier:{{VERSION}}
+    restart: on-failure
+    ports:
+      - "8847:8080"
+    environment:
+      KEYBOARD_ADDRESS: 'http://192.168.1.26:27301'
