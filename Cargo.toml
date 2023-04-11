@@ -11,11 +11,11 @@ actix-web = "4.3.1"
 actix-service = "2.0.2"
 futures = "0.3.28"
 env_logger = "0.10.0"
-serde = { version = "1.0.159", features = ["derive"] }
+serde = { version = "1.0.160", features = ["derive"] }
 serde_json = "1.0.95"
 json = "0.12.4"
 reqwest = { version = "0.11.16", features = ["blocking", "json"] }
-openssl = { version = "0.10.49", features = ["vendored"] }
+openssl = { version = "0.10.50", features = ["vendored"] }
 
 [dev-dependencies]
 actix-rt = "2.8.0"
